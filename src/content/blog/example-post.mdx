@@ -1,0 +1,37 @@
+---
+title: 'Example post — writing template'
+description: 'A draft template showing the expected frontmatter shape and MDX conventions for posts on this journal.'
+pubDate: 2026-09-15
+tags: ['system-design', 'performance']
+draft: true
+---
+
+import Note from '../../components/mdx/Note.astro';
+
+This is a **draft** example post — it stays out of `/blog`, the homepage feed, and RSS until
+`draft` is set to `false`. Copy this file to start a real post.
+
+## Structure
+
+Use standard Markdown for prose, and fenced code blocks for snippets — they're highlighted at
+build time with Shiki, no client-side JS required:
+
+```ts
+export function memoize<T extends (...args: never[]) => unknown>(fn: T): T {
+  const cache = new Map<string, ReturnType<T>>();
+  return ((...args: Parameters<T>) => {
+    const key = JSON.stringify(args);
+    if (!cache.has(key)) cache.set(key, fn(...args) as ReturnType<T>);
+    return cache.get(key);
+  }) as T;
+}
+```
+
+<Note>Use `Note` for callouts that shouldn't look like regular prose — caveats, gotchas, or context.</Note>
+
+## Frontmatter reference
+
+- `title`, `description` — used in listings, SEO, and OG tags
+- `pubDate` — ISO date, drives sort order
+- `tags` — must come from the fixed enum in `src/content.config.ts`
+- `draft` — `true` hides the post from all public listings and RSS

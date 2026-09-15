@@ -1,0 +1,35 @@
+---
+import { profile } from '../data/profile';
+import ContactLinks from './ContactLinks.astro';
+---
+
+<section class="space-y-5">
+  <div class="flex items-center gap-5">
+    <img
+      src={profile.avatarUrl}
+      alt={profile.name}
+      width="88"
+      height="88"
+      class="h-20 w-20 shrink-0 rounded-full border border-zinc-800 sm:h-42 sm:w-42"
+    />
+    <div>
+      <h1 class="font-mono text-2xl leading-tight text-zinc-100 sm:text-5xl">
+        {profile.name} <span class="text-zinc-500">({profile.alias})</span>
+      </h1>
+      <p class="mt-1 text-xl text-cyan-400">{profile.role}</p>
+      <p class="font-mono text-sm text-zinc-500">{profile.location}</p>
+    </div>
+  </div>
+
+  <p class="text-xl leading-snug text-zinc-300">{profile.tagline}</p>
+
+  <div class="flex flex-wrap items-center gap-3">
+    <p class="inline-flex items-center gap-2 rounded border border-cyan-400/20 bg-cyan-400/10 px-2.5 py-1 font-mono text-xs text-cyan-300">
+      <span class="h-1.5 w-1.5 rounded-full bg-cyan-400"></span>
+      {profile.status}
+    </p>
+    <ContactLinks size="lg" />
+  </div>
+</section>
+
+

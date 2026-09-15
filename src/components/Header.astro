@@ -1,0 +1,38 @@
+---
+const nav = [
+  { href: '/', label: 'home' },
+  { href: '/blog', label: 'blog' },
+  { href: '/projects', label: 'projects' }
+];
+
+const currentPath = Astro.url.pathname;
+---
+
+<header class="border-b border-zinc-800">
+  <div class="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
+    <a href="/" class="flex items-center gap-2 font-mono text-base text-zinc-100">
+      <img src="/favicon.svg" alt="" class="h-6 w-6" />
+      viet-le
+    </a>
+    <nav class="flex gap-5 font-mono text-sm">
+      {
+        nav.map((item) => {
+          const isActive =
+            item.href === '/' ? currentPath === '/' : currentPath.startsWith(item.href);
+          return (
+            <a
+              href={item.href}
+              class={
+                isActive
+                  ? 'text-cyan-400'
+                  : 'text-zinc-400 hover:text-zinc-100 transition-colors'
+              }
+            >
+              {item.label}
+            </a>
+          );
+        })
+      }
+    </nav>
+  </div>
+</header>

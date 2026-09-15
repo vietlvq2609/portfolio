@@ -1,0 +1,66 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import Bio from '../components/Bio.astro';
+import Education from '../components/Education.astro';
+import ExperienceTimeline from '../components/ExperienceTimeline.astro';
+import TechStack from '../components/TechStack.astro';
+import FeedCard from '../components/FeedCard.astro';
+
+const posts = await getCollection('blog', ({ data }) => !data.draft);
+const projects = await getCollection('projects', ({ data }) => !data.draft);
+
+const feed = [
+  ...posts.map((post) => ({ type: 'post' as const, slug: post.id, data: post.data })),
+  ...projects.map((project) => ({ type: 'project' as const, slug: project.id, data: project.data }))
+]
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0, 3);
+---
+
+<BaseLayout title="Viet Le — Full-Stack Software Engineer">
+  <Header />
+  <main class="mx-auto grid max-w-6xl gap-8 px-6 py-8 lg:grid-cols-2">
+    <div class="space-y-6">
+			<Bio />
+      <Education />
+      <ExperienceTimeline />
+      <TechStack />
+    </div>
+
+    <div>
+      <div class="mb-3 flex items-center justify-between">
+        <h2 class="font-mono text-xs uppercase tracking-wider text-zinc-500">
+          Research &amp; Projects
+        </h2>
+      </div>
+      <div class="space-y-3">
+        {
+          feed.map((entry) => (
+            <FeedCard
+              type={entry.type}
+              href={entry.type === 'post' ? `/blog/${entry.slug}` : `/projects/${entry.slug}`}
+              title={entry.data.title}
+              description={entry.data.description}
+              pubDate={entry.data.pubDate}
+              tags={entry.data.tags}
+            />
+          ))
+        }
+        {
+          feed.length === 0 && (
+            <p class="text-sm text-zinc-500">Nothing published yet — check back soon.</p>
+          )
+        }
+      </div>
+      <div class="mt-4 flex gap-4 font-mono text-xs">
+        <a href="/blog" class="text-cyan-400 hover:text-cyan-300">view all posts &rarr;</a>
+        <a href="/projects" class="text-cyan-400 hover:text-cyan-300">view all projects &rarr;</a>
+      </div>
+    </div>
+  </main>
+  <Footer />
+</BaseLayout>
+

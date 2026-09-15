@@ -1,0 +1,11 @@
+---
+import { education } from '../data/experience';
+---
+
+<section class="flex items-center gap-3 rounded-lg border border-zinc-800 bg-zinc-900/40 p-3">
+  <span class="text-2xl" aria-hidden="true">🎓</span>
+  <div>
+    <p class="text-base font-medium text-zinc-100">{education.degree}</p>
+    <p class="text-sm text-zinc-400">{education.school} · {education.period}</p>
+  </div>
+</section>
