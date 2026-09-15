@@ -6,8 +6,8 @@ import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
 import icon from 'astro-icon';
 
-// TODO: replace with the real Cloudflare Pages / custom domain URL once deployed
-const SITE_URL = 'https://portfolio.pages.dev';
+// TODO: replace with the real Cloudflare Workers / custom domain URL once deployed
+const SITE_URL = 'https://portfolio.workers.dev';
 
 // https://astro.build/config
 export default defineConfig({
