@@ -8,9 +8,10 @@ interface Props {
   description: string;
   pubDate: Date;
   tags: string[];
+  status?: 'ongoing' | 'completed';
 }
 
-const { type, href, title, description, pubDate, tags } = Astro.props;
+const { type, href, title, description, pubDate, tags, status } = Astro.props;
 
 const dateLabel = pubDate.toLocaleDateString('en-US', {
   year: 'numeric',
@@ -21,7 +22,7 @@ const dateLabel = pubDate.toLocaleDateString('en-US', {
 
 <a
   href={href}
-  class="group block rounded-lg border border-zinc-800 bg-zinc-900/40 p-4 transition-colors hover:border-cyan-400/40"
+  class="card-hover group block rounded-lg border border-zinc-800 bg-zinc-900/40 p-4"
 >
   <div class="mb-2 flex items-center justify-between font-mono text-[0.7rem] text-zinc-500">
     <span class={type === 'project' ? 'text-cyan-400' : 'text-zinc-400'}>
@@ -29,7 +30,17 @@ const dateLabel = pubDate.toLocaleDateString('en-US', {
     </span>
     <time datetime={pubDate.toISOString()}>{dateLabel}</time>
   </div>
-  <h3 class="text-lg font-medium text-zinc-100 group-hover:text-cyan-300">{title}</h3>
+  <div class="flex items-center gap-2">
+    <h3 class="text-lg font-medium text-zinc-100 group-hover:text-cyan-300">{title}</h3>
+    {
+      status === 'ongoing' && (
+        <span class="inline-flex items-center gap-1 rounded-full border border-emerald-400/30 bg-emerald-400/10 px-2 py-0.5 font-mono text-[0.65rem] text-emerald-300">
+          <span class="h-1.5 w-1.5 rounded-full bg-emerald-400" />
+          ongoing
+        </span>
+      )
+    }
+  </div>
   <p class="mt-1 text-base text-zinc-400">{description}</p>
   {
     tags.length > 0 && (
@@ -41,3 +52,4 @@ const dateLabel = pubDate.toLocaleDateString('en-US', {
     )
   }
 </a>
+

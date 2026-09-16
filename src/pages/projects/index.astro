@@ -24,6 +24,7 @@ const projects = (await getCollection('projects', ({ data }) => !data.draft)).so
             description={project.data.description}
             pubDate={project.data.pubDate}
             tags={project.data.tags}
+            status={project.data.status}
           />
         ))
       }

@@ -3,12 +3,12 @@ import { Icon } from 'astro-icon/components';
 import { skills } from '../data/skills';
 ---
 
-<section>
+<section data-aos="fade-up">
   <h2 class="mb-3 font-mono text-xs uppercase tracking-wider text-zinc-500">Stack</h2>
   <div class="flex flex-wrap gap-2">
     {
       skills.map((skill) => (
-        <span class="inline-flex items-center gap-1.5 rounded-md border border-zinc-800 bg-zinc-900/60 px-3 py-2 text-base text-zinc-300">
+        <span class="inline-flex items-center gap-1.5 rounded-md border border-zinc-800 bg-zinc-900/60 px-3 py-2 text-base text-zinc-300 transition-all hover:-translate-y-0.5 hover:border-cyan-400/40">
           {skill.icon ? (
             <Icon name={`simple-icons:${skill.icon}`} style={`color: ${skill.color}`} class="h-4 w-4" />
           ) : (

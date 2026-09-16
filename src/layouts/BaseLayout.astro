@@ -41,5 +41,9 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
   </head>
   <body class="min-h-screen">
     <slot />
+    <script>
+      import '../scripts/aos-init';
+    </script>
   </body>
 </html>
+

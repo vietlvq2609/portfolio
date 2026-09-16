@@ -51,6 +51,7 @@ const projects = defineCollection({
     tags: z.array(TAGS).default([]),
     repoUrl: z.string().url().optional(),
     demoUrl: z.string().url().optional(),
+    status: z.enum(['ongoing', 'completed']).default('completed'),
     draft: z.boolean().default(false)
   })
 });
