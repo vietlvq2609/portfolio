@@ -12,7 +12,6 @@ export const experience: ExperienceEntry[] = [
   {
     company: 'Thankslab Vietnam',
     role: 'Full-Stack Developer',
-    context: 'Japanese company with an office in Vietnam',
     start: 'Jul 2024',
     end: 'Sep 2026',
     bullets: [
@@ -35,7 +34,6 @@ export const experience: ExperienceEntry[] = [
   {
     company: 'Globee Software & Ecommerce',
     role: 'Salesforce Developer',
-    context: '3-month internship followed by 7 months full-time',
     start: 'Mar 2023',
     end: 'Dec 2023',
     bullets: [
