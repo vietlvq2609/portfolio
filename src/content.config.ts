@@ -10,6 +10,8 @@ const TAGS = z.enum([
   'node',
   'fastify',
   'react',
+  'react-native',
+  'angular',
   'laravel',
   'wordpress',
   'salesforce',
@@ -44,16 +46,21 @@ const blog = defineCollection({
 
 const projects = defineCollection({
   loader: glob({ pattern: '**/*.mdx', base: './src/content/projects' }),
-  schema: z.object({
-    title: z.string(),
-    description: z.string(),
-    pubDate: z.coerce.date(),
-    tags: z.array(TAGS).default([]),
-    repoUrl: z.string().url().optional(),
-    demoUrl: z.string().url().optional(),
-    status: z.enum(['ongoing', 'completed']).default('completed'),
-    draft: z.boolean().default(false)
-  })
+  schema: ({ image }) =>
+    z.object({
+      title: z.string(),
+      description: z.string(),
+      pubDate: z.coerce.date(),
+      tags: z.array(TAGS).default([]),
+      repoUrl: z.string().url().optional(),
+      demoUrl: z.string().url().optional(),
+      status: z.enum(['ongoing', 'completed']).default('completed'),
+      draft: z.boolean().default(false),
+      // controls showcase card size on the homepage bento grid
+      size: z.enum(['lg', 'md', 'sm']).default('sm'),
+      coverImage: image().optional(),
+      highlights: z.array(z.string()).optional()
+    })
 });
 
 export const collections = { blog, projects };

@@ -2,6 +2,7 @@
 import type { CollectionEntry } from 'astro:content';
 import { getCollection } from 'astro:content';
 import FeedCard from './FeedCard.astro';
+import FeedHeroCard from './FeedHeroCard.astro';
 
 type FeedEntry =
   | { type: 'post'; slug: string; data: CollectionEntry<'blog'>['data'] }
@@ -10,12 +11,19 @@ type FeedEntry =
 const posts = await getCollection('blog', ({ data }) => !data.draft);
 const projects = await getCollection('projects', ({ data }) => !data.draft);
 
-const feed: FeedEntry[] = [
+const flagship = projects.find((project) => project.data.size === 'lg');
+const featured = projects
+  .filter((project) => project.data.size === 'md')
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+const secondary: FeedEntry[] = [
   ...posts.map((post) => ({ type: 'post' as const, slug: post.id, data: post.data })),
-  ...projects.map((project) => ({ type: 'project' as const, slug: project.id, data: project.data }))
+  ...projects
+    .filter((project) => project.data.size === 'sm')
+    .map((project) => ({ type: 'project' as const, slug: project.id, data: project.data }))
 ]
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
-  .slice(0, 3);
+  .slice(0, 4);
 ---
 
 <section>
@@ -24,9 +32,47 @@ const feed: FeedEntry[] = [
       Research &amp; Projects
     </h2>
   </div>
-  <div class="grid gap-3 sm:grid-cols-3">
+
+  {
+    (flagship || featured.length > 0) && (
+      <div class="space-y-4" data-aos="fade-up">
+        {flagship && (
+          <FeedHeroCard
+            href={`/projects/${flagship.id}`}
+            title={flagship.data.title}
+            description={flagship.data.description}
+            pubDate={flagship.data.pubDate}
+            tags={flagship.data.tags}
+            status={flagship.data.status}
+            size="lg"
+            coverImage={flagship.data.coverImage}
+            highlights={flagship.data.highlights}
+          />
+        )}
+        {featured.length > 0 && (
+          <div class="grid gap-4 sm:grid-cols-2">
+            {featured.map((project) => (
+              <FeedHeroCard
+                href={`/projects/${project.id}`}
+                title={project.data.title}
+                description={project.data.description}
+                pubDate={project.data.pubDate}
+                tags={project.data.tags}
+                status={project.data.status}
+                size="md"
+                coverImage={project.data.coverImage}
+                highlights={project.data.highlights}
+              />
+            ))}
+          </div>
+        )}
+      </div>
+    )
+  }
+
+  <div class="mt-4 grid gap-3 sm:grid-cols-3">
     {
-      feed.map((entry, i) => (
+      secondary.map((entry, i) => (
         <div data-aos="fade-up" data-aos-delay={i * 80}>
           <FeedCard
             type={entry.type}
@@ -41,7 +87,7 @@ const feed: FeedEntry[] = [
       ))
     }
     {
-      feed.length === 0 && (
+      !flagship && featured.length === 0 && secondary.length === 0 && (
         <p class="text-sm text-zinc-500">Nothing published yet — check back soon.</p>
       )
     }
